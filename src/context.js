@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import items from './data'
+// import items from './data'
 import Client from './contentful'
 
 
@@ -23,10 +23,16 @@ export const RoomProvider = ({ children }) => {
         return tempItems;
     }
 
+    const getRoom = (slug) => {
+        let tempRooms = [...state.rooms];
+        const room = tempRooms.find(room => room.slug === slug);
+        return room;
+    }
+
     useEffect(() => {
         const getData = async () => {
             try {
-                let response = await Client.getEntries({ content_type: 'beachResortRoom', order: '-fields.size' })
+                let response = await Client.getEntries({ content_type: 'beachResortRoom', order: 'fields.size' })
                 console.log(response.items)
                 let rooms = formData(response.items);
                 console.log(rooms)
@@ -49,11 +55,6 @@ export const RoomProvider = ({ children }) => {
 
 
 
-    const getRoom = (slug) => {
-        let tempRooms = [...state.rooms];
-        const room = tempRooms.find(room => room.slug === slug);
-        return room;
-    }
 
     const handleChange = (e) => {
         // console.log(e)
@@ -76,12 +77,11 @@ export const RoomProvider = ({ children }) => {
         capacity = parseInt(capacity)
         if (type !== "all") {
             tempRooms = tempRooms.filter(room => room.type === type)
-
         }
+
         // filter by capacity
         if (capacity !== 1) {
             tempRooms = tempRooms.filter(room => room.capacity >= capacity)
-
         }
 
         // filter by price
@@ -102,6 +102,7 @@ export const RoomProvider = ({ children }) => {
             ...prevState,
             sortedRooms: tempRooms
         }))
+        // eslint-disable-next-line
     }, [state.type, state.price, state.capacity, state.maxPrice, state.minPrice, state.breakfast, state.pets])
 
     return (

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import defaultBcg from '../images/room-1.jpeg'
-import Hero from '../components/Hero'
+// import Hero from '../components/Hero'
 import Banner from '../components/Banner'
 import { Link } from 'react-router-dom'
 import { RoomContext } from '../context'
@@ -10,8 +10,11 @@ import StyledHero from '../components/StyledHero'
 const SingleRoom = (props) => {
     const value = useContext(RoomContext)
     const { getRoom } = value
+    console.log(getRoom)
     const room = getRoom(props.match.params.slug)
+    // console.log(room)
     const { name, description, capacity, size, price, extras, breakfast, pets, images } = room
+    // console.log(room)
     const [images0, ...defaultImg] = images;
 
     if (!room) {
